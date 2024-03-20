@@ -61,7 +61,7 @@ CREATE TABLE `items` (
   PRIMARY KEY (`ItemID`),
   KEY `your_fk_donorID` (`donorId`),
   CONSTRAINT `your_fk_donorID` FOREIGN KEY (`donorId`) REFERENCES `users` (`UserID`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (4,'Mini Hand Sanitizer Bottles','Sanitation','Hand Sanitizers',1500,2,60601),(5,'Canned Beans and Vegetables','Food','Non-perishable Food Cans',200,5,70112),(6,'Waterproof Thermal Jacket','Clothing','Thermal Jackets',30,6,94102),(7,'Rechargeable LED Flashlight','Tools','Flashlights',40,7,85001),(8,'Quick-Dry Microfiber Towel','Hygiene','Towels',100,1,33101),(9,'Complete First Aid Kit','First Aid','First Aid Kits',20,2,48201),(10,'16oz Bottled Water','Water Supplies','Bottled Water',500,7,37201),(11,'Two-person Emergency Tent','Shelter','Tents',10,6,78701),(12,'Waterproof Rain Boots','Clothing','Rain Boots',35,5,94102),(13,'Latex Medical Gloves','Medical Supplies','Gloves',200,6,10001),(14,'Prepacked Ready-to-Eat Meals','Food','Ready-to-Eat Meals',120,7,70112);
+INSERT INTO `items` VALUES (5,'Canned Beans and Vegetables','Food','Non-perishable Food Cans',200,5,70112),(6,'Waterproof Thermal Jacket','Clothing','Thermal Jackets',30,6,94102),(7,'Rechargeable LED Flashlight','Tools','Flashlights',40,7,85001),(8,'Quick-Dry Microfiber Towel','Hygiene','Towels',100,1,33101),(9,'Complete First Aid Kit','First Aid','First Aid Kits',20,2,48201),(10,'16oz Bottled Water','Water Supplies','Bottled Water',500,7,37201),(11,'Two-person Emergency Tent','Shelter','Tents',10,6,78701),(12,'Waterproof Rain Boots','Clothing','Rain Boots',35,5,94102),(13,'Latex Medical Gloves','Medical Supplies','Gloves',200,6,10001),(14,'Prepacked Ready-to-Eat Meals','Food','Ready-to-Eat Meals',120,7,70112);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +191,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Username` (`Username`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +200,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'adminUser','hashed_password','admin@example.com','Admin','2024-02-14 03:27:20',NULL),(2,'donorUser','hashed_password','donor@example.com','Donor','2024-02-14 03:27:20',NULL),(3,'recipientUser','hashed_password','recipient@example.com','Recipient','2024-02-14 03:27:20',NULL),(5,'LukeTest','test','luketest@gmail.com','Donor','2024-02-16 17:33:49',NULL),(6,'TestName','$2b$12$uEN1k0mPttrbp44tOeJK4.IJvm6REWDcw72xQjmyOAOeXHxJhKRZ.','test@email.com','Donor','2024-02-21 15:07:02',NULL),(7,'Test','$2b$12$VYa9MtcPBz3vtdcad.3J3etV0iuffRzF42658WAUM6mB8/RrLDJh6','nice@email.com','Donor','2024-02-21 15:54:29',NULL);
+INSERT INTO `users` VALUES (1,'adminUser','hashed_password','admin@example.com','Admin','2024-02-14 03:27:20',NULL),(2,'donorUser','hashed_password','donor@example.com','Donor','2024-02-14 03:27:20',NULL),(3,'recipientUser','hashed_password','recipient@example.com','Recipient','2024-02-14 03:27:20',NULL),(5,'LukeTest','test','luketest@gmail.com','Donor','2024-02-16 17:33:49',NULL),(6,'TestName','$2b$12$uEN1k0mPttrbp44tOeJK4.IJvm6REWDcw72xQjmyOAOeXHxJhKRZ.','test@email.com','Donor','2024-02-21 15:07:02',NULL),(7,'Test','$2b$12$VYa9MtcPBz3vtdcad.3J3etV0iuffRzF42658WAUM6mB8/RrLDJh6','nice@email.com','Donor','2024-02-21 15:54:29',NULL), (13,'testfdasfda','$2b$12$nx9KSPgN1ToEFIQi0pN52OSsIv9k42UEbOnUQVrfbWKSVAjZoXOs2','test@gmail.com','Recipient','2024-02-29 00:11:53',NULL),(16,'luketest123','$2b$12$rFapf.gXMVr.hZGdq6AqN.uIZ/Olo31pkAgqfBGKC6fh/ZnjYHu3O','test123@gmail.com','Donor','2024-02-29 20:14:20',NULL),(17,'testAdminUser','$2b$12$KHKTpclXhYWwtzgi5MgEVOVbALX9.8has9x9ftkXsCSMV.pYDSuNu','testAdminUser@gmail.com','Admin','2024-02-29 22:09:46',NULL),(18,'testLukeUser','$2b$12$EZFEsslwNKzkSNVo4oAewuoEGXBCbSUiIvXRsmiL87v3L07y5/CoG','i@email.com','Admin','2024-02-29 22:19:18',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -554,6 +554,25 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `UpdateDisasterEvent` */;
+/*!50003 DROP PROCEDURE IF EXISTS `GetUserByUsername` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetUserByUsername`(IN p_Username VARCHAR(255))
+BEGIN
+    SELECT * FROM users WHERE Username = p_Username;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -654,4 +673,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-26 21:02:55
+-- Dump completed on 2024-02-29 21:02:55
