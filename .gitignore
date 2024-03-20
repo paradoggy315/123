@@ -1,0 +1,11 @@
+venv/
+.venv
+.env
+.vscode
+client/node_modules/
+
+server/__pycache__/
+server/routes/__pycache__/
+server/services/__pycache__/
+
+*.pyc
