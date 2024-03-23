@@ -1,9 +1,10 @@
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS AddItem$$
-CREATE PROCEDURE AddItem(IN _name VARCHAR(255), IN _category VARCHAR(255), IN _description TEXT, IN _quantity INT, IN _donorID INT, IN _location VARCHAR(255))
+CREATE PROCEDURE AddItem(IN name VARCHAR(255), IN category VARCHAR(255), IN description TEXT, IN quantity INT, IN donor_id INT, IN location VARCHAR(255))
 BEGIN
-  INSERT INTO items (Name, Category, Description, quantity, donorID, location) VALUES (_name, _category, _description, _quantity, _donorID, _location);
+    INSERT INTO items (name, category, description, quantity, location) VALUES (name, category, description, quantity, location);
+    SELECT LAST_INSERT_ID() AS item_id;  
 END$$
 
 DROP PROCEDURE IF EXISTS UpdateItem$$

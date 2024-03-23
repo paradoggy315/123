@@ -17,6 +17,7 @@ def get_item(item_id):
 def add_item():
     data = request.json
     result = add_new_item(data['name'], data['category'], data['description'], data['quantity'], data['donorId'], data['location'])
+    print("Item Result", result)
     return jsonify(result)
 
 @item_blueprint.route('/item/<int:item_id>', methods=['PUT'])

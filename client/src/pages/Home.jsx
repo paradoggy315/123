@@ -45,6 +45,11 @@ function Home() {
     navigate('/requests');
   };
 
+  const goToAddResponse = () => {
+    // Redirect to the page that allows adding a response
+    navigate('/add-response');
+  };
+
   // Function to format the date
   const formatDate = (dateString) => {
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
@@ -87,15 +92,16 @@ function Home() {
             <Col key={request.RequestID}>
               <Card className="mb-2">
                 <Card.Body>
-                  <Card.Title>{request.UnitType}</Card.Title>
+                  <Card.Title>{request.Name}</Card.Title>
                   <Card.Text>
+                    Category: {request.Category} <br />
                     Quantity Needed: {request.QuantityNeeded} <br />
                     Location: {request.Location} <br />
                     Event: {request.EventName} <br />
                     Date: {formatDate(request.StartDate)}
                   </Card.Text>
                   <Button variant="success" onClick={() => goToRequest(request.RequestID)}>
-                    Respond
+                    Details
                   </Button>
                 </Card.Body>
               </Card>

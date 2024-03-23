@@ -10,7 +10,7 @@ from .routes.items_routes import item_blueprint  # Import the Blueprint
 from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"*": {"origins": "http://localhost:5173"}})
 
 # Register the Blueprint with the app
 app.register_blueprint(user_blueprint)

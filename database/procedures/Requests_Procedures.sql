@@ -48,7 +48,22 @@ CREATE PROCEDURE `GetRequestByID`(
     IN p_RequestID INT
 )
 BEGIN
-    SELECT * FROM requests WHERE RequestID = p_RequestID;
+    SELECT 
+        r.RequestID, 
+        r.ItemID,
+        r.QuantityNeeded,
+        r.Status,
+        r.CreateDate,
+        i.Name AS ItemName,
+        i.Category,
+        i.Description AS ItemDescription,
+        d.EventName,
+        d.Location,
+        d.StartDate
+    FROM requests r
+    JOIN disasterevents d ON r.EventID = d.EventID
+    LEFT JOIN items i ON r.ItemID = i.ItemID
+    WHERE r.RequestID = p_RequestID;
 END $$
 
 DROP PROCEDURE IF EXISTS GetRequestsAndEventsInfo$$
@@ -56,7 +71,8 @@ CREATE PROCEDURE `GetRequestsAndEventsInfo`()
 BEGIN
     SELECT 
         r.RequestID, 
-        r.ItemID, 
+        r.ItemID,
+        i.Name, 
         i.Category, 
         r.QuantityNeeded, 
         d.Location, 

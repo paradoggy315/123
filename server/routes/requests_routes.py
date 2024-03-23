@@ -22,13 +22,18 @@ def handle_get_request_by_id(request_id):
     except Exception as e:
         return jsonify(error=str(e)), 500
 
-@requests_blueprint.route('/requests', methods=['POST'])
+@requests_blueprint.route('/add-request', methods=['POST'])
 def handle_add_request():
     try:
         data = request.json
+        if 'item_id' not in data:
+            print(data)
+            print("Missing item_id")
+            return jsonify(error="Missing item_id"), 400  # Bad Request for missing data
         add_request(data['event_id'], data['user_id'], data['item_id'], data['quantity_needed'], data['status'], data['create_date'])
         return jsonify(message="Request added successfully"), 201
     except Exception as e:
+        print(e)
         return jsonify(error=str(e)), 500
 
 @requests_blueprint.route('/requests/<int:request_id>', methods=['PUT'])

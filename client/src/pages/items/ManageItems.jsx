@@ -3,13 +3,6 @@ import { Table, Button, Modal, Form, Input, notification } from 'antd';
 
 
 const ManageItems = () => {
-  // Initial fake data
-  const initialItems = [
-    { id: 1, name: 'Tent', category: 'Equipment', condition: 'New', quantity: 10, location: 'Warehouse 1' },
-    { id: 2, name: 'Sleeping Bag', category: 'Equipment', condition: 'Used', quantity: 5, location: 'Warehouse 2' },
-    // Add more items as needed
-  ];
-
   const [items, setItems] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingItem, setEditingItem] = useState(null);

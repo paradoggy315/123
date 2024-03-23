@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './pages/auth/AuthContext';
+import ProtectedRoute  from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -10,7 +11,10 @@ import RequestDetail from './pages/requests/RequestDetail'; // Import your reque
 import AllDisasters from './pages/disasters/AllDisasters';
 import AllRequests from './pages/requests/AllRequests'; // Import your all requests component
 import Profile from './pages/users/Profile'; // Import your profile component
-import ManageItems from './pages/items/ManageItems'; // Import your item management component
+import ManageItems from './pages/items/ManageItems'; // Import your item masnagement component
+import AddRequests from './pages/requests/AddRequests';
+import AddDisaster from './pages/disasters/AddDisaster';
+import AddResponse from './pages/responses/AddResponse';
 
 
 const router = createBrowserRouter(
@@ -23,6 +27,31 @@ const router = createBrowserRouter(
       <Route path="requests/:requestId" element={<RequestDetail />} />
       <Route path="disasters" element={<AllDisasters />} />
       <Route path="requests" element={<AllRequests />} />
+      <Route path="add-requests" element={<AddRequests />} />
+      <Route 
+        path="add-response" 
+        element={
+          <ProtectedRoute requiredRole="Donor">
+            <AddResponse />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="item-management" 
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <ManageItems />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="addDisasterEvent" 
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <AddDisaster />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="profile" element={<Profile />} />
       <Route path="item-management" element={<ManageItems />} />
       <Route path="*" element={<div>Not Found</div>} />
