@@ -7,17 +7,6 @@ login_blueprint = Blueprint('login_bp', __name__)
 import os
 
 
-# @user_blueprint.route('/login/<str:user_id,user_password>', methods=['GET'])
-# def handle_get_users(user_id,user_password):
-#     try:
-#         user = get_user_by_username(username)
-#         valid_user = validate_password(user, password)
-#         return jsonify(request_data),200
-#     except Exception as e:
-#         return jsonify(error=str(e)), 500
-    
-
-
 @login_blueprint.route('/login', methods=['POST'])
 def handle_login():
     try:
@@ -26,7 +15,7 @@ def handle_login():
         password = data.get('password').encode('utf-8')
         user = get_user_by_username(username)
         if not user:
-            return jsonify({"error": "Username or password not found"}), 404
+            return jsonify({"error": "Username or password not found"}), 405
 
         stored_password = user['PasswordHash'].encode('utf-8')
         if bcrypt.checkpw(password, stored_password):

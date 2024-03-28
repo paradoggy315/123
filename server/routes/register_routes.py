@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from ..services.register_service import get_all_users, username_exists, email_exists, add_user
 from ..utils.register_util import encrypt_password  # Ensure the correct import path
 
-user_blueprint = Blueprint('user_bp', __name__)
+register_blueprint = Blueprint('register_bp', __name__)
 
-@user_blueprint.route('/register', methods=['GET'])
+@register_blueprint.route('/register', methods=['GET'])
 def handle_get_all_users():
     try:
         users = get_all_users()
@@ -12,7 +12,7 @@ def handle_get_all_users():
     except Exception as e:
         return jsonify(error=str(e)), 500
 
-@user_blueprint.route('/register', methods=['POST'])
+@register_blueprint.route('/register', methods=['POST'])
 def handle_add_user():
     try:
         user_data = request.json

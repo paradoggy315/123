@@ -15,6 +15,9 @@ import ManageItems from './pages/items/ManageItems'; // Import your item masnage
 import AddRequests from './pages/requests/AddRequests';
 import AddDisaster from './pages/disasters/AddDisaster';
 import AddResponse from './pages/responses/AddResponse';
+import CreatePledge from './pages/pledges/CreatePledges';
+import ManageUserPledges from './pages/pledges/UserPledges'; // Import your manage user pledges component 
+
 
 
 const router = createBrowserRouter(
@@ -55,6 +58,23 @@ const router = createBrowserRouter(
       <Route path="profile" element={<Profile />} />
       <Route path="item-management" element={<ManageItems />} />
       <Route path="*" element={<div>Not Found</div>} />
+      <Route 
+        path="create-pledges" 
+        element={
+          <ProtectedRoute requiredRole="Donor">
+            <CreatePledge  />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="manage-pledges" 
+        element={
+          <ProtectedRoute requiredRole="Donor">
+            <ManageUserPledges />
+          </ProtectedRoute>
+        }
+      />
+
     </Route>
   )
 )

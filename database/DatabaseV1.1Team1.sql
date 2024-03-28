@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `dams` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `dams`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: dams
@@ -61,7 +63,7 @@ CREATE TABLE `items` (
   PRIMARY KEY (`ItemID`),
   KEY `your_fk_donorID` (`donorId`),
   CONSTRAINT `your_fk_donorID` FOREIGN KEY (`donorId`) REFERENCES `users` (`UserID`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +72,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (6,'Waterproof Thermal Jacket','Clothing','Thermal Jackets',30,6,94102),(7,'Rechargeable LED Flashlight','Tools','Flashlights',40,7,85001),(8,'Quick-Dry Microfiber Towel','Hygiene','Towels',100,1,33101),(9,'Complete First Aid Kit','First Aid','First Aid Kits',20,2,48201),(10,'16oz Bottled Water','Water Supplies','Bottled Water',500,7,37201),(11,'Two-person Emergency Tent','Shelter','Tents',10,6,78701),(12,'Waterproof Rain Boots','Clothing','Rain Boots',35,5,94102),(13,'Latex Medical Gloves','Medical Supplies','Gloves',200,6,10001),(14,'Prepacked Ready-to-Eat Meals','Food','Ready-to-Eat Meals',120,7,70112),(19,'Nice Item','Beach','45',3,20,1323),(27,'Nice Item','Beach','af',1,NULL,123),(28,'Nice Item','Beach','af',1,NULL,123),(29,'Nice Item','Beach','af',1,NULL,123),(30,'Nice Item','Beach','af',1,NULL,123);
+INSERT INTO `items` VALUES (6,'Waterproof Thermal Jacket','Clothing','Thermal Jackets',30,6,94102),(7,'Rechargeable LED Flashlight','Tools','Flashlights',40,7,85001),(8,'Quick-Dry Microfiber Towel','Hygiene','Towels',100,1,33101),(9,'Complete First Aid Kit','First Aid','First Aid Kits',20,2,48201),(10,'16oz Bottled Water','Water Supplies','Bottled Water',500,7,37201),(11,'Two-person Emergency Tent','Shelter','Tents',10,6,78701),(12,'Waterproof Rain Boots','Clothing','Rain Boots',35,5,94102),(13,'Latex Medical Gloves','Medical Supplies','Gloves',200,6,10001),(14,'Prepacked Ready-to-Eat Meals','Food','Ready-to-Eat Meals',120,7,70112),(19,'Nice Item','Beach','45',3,20,1323),(27,'Nice Item','Beach','af',1,NULL,123),(28,'Nice Item','Beach','af',1,NULL,123),(29,'Nice Item','Beach','af',1,NULL,123),(30,'Nice Item','Beach','af',1,NULL,123),(31,'Towel','Drying Gear','Towels to Help Dry the Ducks',20,NULL,12345),(32,'Ladder','Nice','Nice',1,NULL,12345);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,6 +110,37 @@ INSERT INTO `matches` VALUES (1,1,1,1,'2024-02-14 03:27:20'),(2,2,2,1,'2024-02-1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pledges`
+--
+
+DROP TABLE IF EXISTS `pledges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pledges` (
+  `PledgeID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int NOT NULL,
+  `EventID` int DEFAULT NULL,
+  `ItemID` int NOT NULL,
+  `QuantityPledged` int NOT NULL,
+  `Status` enum('Pending','Fulfilled','Cancelled') NOT NULL DEFAULT 'Pending',
+  `PledgeDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`PledgeID`),
+  KEY `fk_UserID` (`UserID`),
+  CONSTRAINT `pledges_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pledges`
+--
+
+LOCK TABLES `pledges` WRITE;
+/*!40000 ALTER TABLE `pledges` DISABLE KEYS */;
+INSERT INTO `pledges` VALUES (2,21,NULL,6,4,'Pending','2024-03-26 22:20:20'),(3,21,NULL,8,24,'Pending','2024-03-26 23:02:52');
+/*!40000 ALTER TABLE `pledges` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `requests`
 --
 
@@ -129,7 +162,7 @@ CREATE TABLE `requests` (
   CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`EventID`) REFERENCES `disasterevents` (`EventID`),
   CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
   CONSTRAINT `requests_ibfk_3` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ItemID`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +171,7 @@ CREATE TABLE `requests` (
 
 LOCK TABLES `requests` WRITE;
 /*!40000 ALTER TABLE `requests` DISABLE KEYS */;
-INSERT INTO `requests` VALUES (1,1,3,NULL,50,'Open','2024-02-14 03:27:20'),(2,1,3,NULL,20,'Open','2024-02-14 03:27:20'),(3,6,20,30,1,'Open','2024-03-21 09:45:13');
+INSERT INTO `requests` VALUES (1,1,3,NULL,50,'Open','2024-02-14 03:27:20'),(2,1,3,NULL,20,'Open','2024-02-14 03:27:20'),(3,6,20,30,0,'Fulfilled','2024-03-21 09:45:13'),(4,1,21,31,16,'Open','2024-03-26 06:54:29'),(5,2,21,32,0,'Fulfilled','2024-03-27 02:04:26');
 /*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +193,7 @@ CREATE TABLE `responses` (
   KEY `MatchedRequestID` (`MatchedRequestID`),
   CONSTRAINT `responses_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
   CONSTRAINT `responses_ibfk_2` FOREIGN KEY (`MatchedRequestID`) REFERENCES `requests` (`RequestID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +202,7 @@ CREATE TABLE `responses` (
 
 LOCK TABLES `responses` WRITE;
 /*!40000 ALTER TABLE `responses` DISABLE KEYS */;
-INSERT INTO `responses` VALUES (1,2,1,25,'Pending'),(2,2,2,10,'Pending');
+INSERT INTO `responses` VALUES (1,2,1,25,'Pending'),(2,2,2,10,'Pending'),(3,21,3,1,'Pending'),(4,21,3,1,'Pending'),(5,21,3,1,'Shipped'),(6,21,3,1,'Shipped'),(7,21,4,4,'Shipped'),(8,21,5,1,'Shipped');
 /*!40000 ALTER TABLE `responses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,6 +221,11 @@ CREATE TABLE `users` (
   `Role` enum('Admin','Donor','Recipient','Volunteer') NOT NULL,
   `CreateDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `LastLogin` timestamp NULL DEFAULT NULL,
+  `Country` varchar(255) DEFAULT NULL,
+  `Region` varchar(255) DEFAULT NULL,
+  `State` varchar(255) DEFAULT NULL,
+  `ZipCode` varchar(255) DEFAULT NULL,
+  `Address` text,
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Username` (`Username`),
   UNIQUE KEY `Email` (`Email`)
@@ -200,7 +238,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'adminUser','hashed_password','admin@example.com','Admin','2024-02-14 03:27:20',NULL),(2,'donorUser','hashed_password','donor@example.com','Donor','2024-02-14 03:27:20',NULL),(3,'recipientUser','hashed_password','recipient@example.com','Recipient','2024-02-14 03:27:20',NULL),(5,'LukeTest','test','luketest@gmail.com','Donor','2024-02-16 17:33:49',NULL),(6,'TestName','$2b$12$uEN1k0mPttrbp44tOeJK4.IJvm6REWDcw72xQjmyOAOeXHxJhKRZ.','test@email.com','Donor','2024-02-21 15:07:02',NULL),(7,'Test','$2b$12$VYa9MtcPBz3vtdcad.3J3etV0iuffRzF42658WAUM6mB8/RrLDJh6','nice@email.com','Donor','2024-02-21 15:54:29',NULL),(13,'testfdasfda','$2b$12$nx9KSPgN1ToEFIQi0pN52OSsIv9k42UEbOnUQVrfbWKSVAjZoXOs2','test@gmail.com','Recipient','2024-02-29 00:11:53',NULL),(16,'luketest123','$2b$12$rFapf.gXMVr.hZGdq6AqN.uIZ/Olo31pkAgqfBGKC6fh/ZnjYHu3O','test123@gmail.com','Donor','2024-02-29 20:14:20',NULL),(17,'testAdminUser','$2b$12$KHKTpclXhYWwtzgi5MgEVOVbALX9.8has9x9ftkXsCSMV.pYDSuNu','testAdminUser@gmail.com','Admin','2024-02-29 22:09:46',NULL),(18,'testLukeUser','$2b$12$EZFEsslwNKzkSNVo4oAewuoEGXBCbSUiIvXRsmiL87v3L07y5/CoG','i@email.com','Admin','2024-02-29 22:19:18',NULL),(19,'testLuke2','$2b$12$tF3xNYN42jcTUPF78ABZmuKf/94sLPPdr8oEjCFv9oT.tHXszrdAO','testluke@gmail.com','Admin','2024-03-07 03:36:02',NULL),(20,'testUserPassword1234!','$2b$12$cyVe3L3zSsra4G995gIEOOYqgfd/XCDFSHO3zxpemToeZdSHVuX2C','testUserPassword1234!@gmail.com','Admin','2024-03-18 22:27:19',NULL),(21,'donorUserPassword1234!','$2b$12$jwZ0NWZ2UuS/NRRwiiva0uOx7QoAqF9vImv1lqnU5P24I3dYfoYkC','donorUserPassword1234!@gmail.com','Donor','2024-03-18 23:11:34',NULL);
+INSERT INTO `users` VALUES (1,'adminUser','hashed_password','admin@example.com','Admin','2024-02-14 03:27:20',NULL,NULL,NULL,NULL,NULL,NULL),(2,'donorUser','hashed_password','donor@example.com','Donor','2024-02-14 03:27:20',NULL,NULL,NULL,NULL,NULL,NULL),(3,'recipientUser','hashed_password','recipient@example.com','Recipient','2024-02-14 03:27:20',NULL,NULL,NULL,NULL,NULL,NULL),(5,'LukeTest','test','luketest@gmail.com','Donor','2024-02-16 17:33:49',NULL,NULL,NULL,NULL,NULL,NULL),(6,'TestName','$2b$12$uEN1k0mPttrbp44tOeJK4.IJvm6REWDcw72xQjmyOAOeXHxJhKRZ.','test@email.com','Donor','2024-02-21 15:07:02',NULL,NULL,NULL,NULL,NULL,NULL),(7,'Test','$2b$12$VYa9MtcPBz3vtdcad.3J3etV0iuffRzF42658WAUM6mB8/RrLDJh6','nice@email.com','Donor','2024-02-21 15:54:29',NULL,NULL,NULL,NULL,NULL,NULL),(13,'testfdasfda','$2b$12$nx9KSPgN1ToEFIQi0pN52OSsIv9k42UEbOnUQVrfbWKSVAjZoXOs2','test@gmail.com','Recipient','2024-02-29 00:11:53',NULL,NULL,NULL,NULL,NULL,NULL),(16,'luketest123','$2b$12$rFapf.gXMVr.hZGdq6AqN.uIZ/Olo31pkAgqfBGKC6fh/ZnjYHu3O','test123@gmail.com','Donor','2024-02-29 20:14:20',NULL,NULL,NULL,NULL,NULL,NULL),(17,'testAdminUser','$2b$12$KHKTpclXhYWwtzgi5MgEVOVbALX9.8has9x9ftkXsCSMV.pYDSuNu','testAdminUser@gmail.com','Admin','2024-02-29 22:09:46',NULL,NULL,NULL,NULL,NULL,NULL),(18,'testLukeUser','$2b$12$EZFEsslwNKzkSNVo4oAewuoEGXBCbSUiIvXRsmiL87v3L07y5/CoG','i@email.com','Admin','2024-02-29 22:19:18',NULL,NULL,NULL,NULL,NULL,NULL),(19,'testLuke2','$2b$12$tF3xNYN42jcTUPF78ABZmuKf/94sLPPdr8oEjCFv9oT.tHXszrdAO','testluke@gmail.com','Admin','2024-03-07 03:36:02',NULL,NULL,NULL,NULL,NULL,NULL),(20,'testUserPassword1234!','$2b$12$cyVe3L3zSsra4G995gIEOOYqgfd/XCDFSHO3zxpemToeZdSHVuX2C','testUserPassword1234!@gmail.com','Admin','2024-03-18 22:27:19',NULL,NULL,NULL,NULL,NULL,NULL),(21,'donorUserPassword1234!','$2b$12$jwZ0NWZ2UuS/NRRwiiva0uOx7QoAqF9vImv1lqnU5P24I3dYfoYkC','donorUserPassword1234!@gmail.com','Donor','2024-03-18 23:11:34',NULL,'123 Main St','CountryName','StateName','ZipCode','RegionName');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,6 +285,32 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `AddPledge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddPledge`(
+    IN _UserID INT, 
+    IN _ItemID INT, 
+    IN _QuantityPledged INT, 
+    IN _Status ENUM('Pending','Fulfilled','Cancelled')
+)
+BEGIN
+    INSERT INTO pledges (UserID, ItemID, QuantityPledged, Status) 
+    VALUES (_UserID, _ItemID, _QuantityPledged, _Status);
+    SELECT LAST_INSERT_ID() AS PledgeID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `AddRequest` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -268,6 +332,31 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `AddRequest`(
 BEGIN
     INSERT INTO requests (EventID, UserID, ItemID, QuantityNeeded, Status, CreateDate) 
     VALUES (p_EventID, p_UserID, p_ItemID, p_QuantityNeeded, p_Status, p_CreateDate);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `AddResponse` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddResponse`(
+    IN p_UserID INT, 
+    IN p_MatchedRequestID INT, 
+    IN p_QuantityProvided INT, 
+    IN p_Status ENUM('Pending', 'Completed', 'Shipped')
+)
+BEGIN
+    INSERT INTO responses (UserID, MatchedRequestID, QuantityProvided, Status) 
+    VALUES (p_UserID, p_MatchedRequestID, p_QuantityProvided, p_Status);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -331,6 +420,57 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `CreateResponseAndUpdateRequest` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateResponseAndUpdateRequest`(
+    IN p_UserID INT,
+    IN p_MatchedRequestID INT,
+    IN p_QuantityProvided INT,
+    IN p_Status ENUM('Pending', 'Completed', 'Shipped')
+)
+BEGIN
+    DECLARE new_quantity_needed INT;
+
+    -- Add the response
+    INSERT INTO responses (UserID, MatchedRequestID, QuantityProvided, Status)
+    VALUES (p_UserID, p_MatchedRequestID, p_QuantityProvided, p_Status);
+
+    -- Calculate the new quantity needed
+    SELECT QuantityNeeded - p_QuantityProvided INTO new_quantity_needed
+    FROM requests
+    WHERE RequestID = p_MatchedRequestID;
+
+    -- Check if the new quantity needed is less than 0, if so, set it to 0
+    IF new_quantity_needed < 0 THEN
+        SET new_quantity_needed = 0;
+    END IF;
+
+    -- Update the quantity needed for the request
+    UPDATE requests
+    SET QuantityNeeded = new_quantity_needed
+    WHERE RequestID = p_MatchedRequestID;
+
+    -- Optionally, you can handle the case where the quantity needed reaches zero
+    -- and set the status of the request to 'Fulfilled'
+    IF new_quantity_needed = 0 THEN
+        UPDATE requests
+        SET Status = 'Fulfilled'
+        WHERE RequestID = p_MatchedRequestID;
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `DeleteDisasterEvent` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -369,6 +509,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeletePledge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeletePledge`(IN _PledgeID INT)
+BEGIN
+    DELETE FROM pledges WHERE PledgeID = _PledgeID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `DeleteRequest` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -384,6 +543,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteRequest`(
 )
 BEGIN
     DELETE FROM requests WHERE RequestID = p_RequestID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteResponse` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteResponse`(
+    IN p_ResponseID INT
+)
+BEGIN
+    DELETE FROM responses WHERE ResponseID = p_ResponseID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -447,6 +627,37 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetAllPledges` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllPledges`()
+BEGIN
+    SELECT 
+        p.PledgeID, 
+        p.QuantityPledged, 
+        p.Status AS PledgeStatus, 
+        i.Name AS ItemName, 
+        i.Description AS ItemDescription, 
+        i.Category AS ItemCategory,
+        i.ItemID,
+        u.UserID,
+        u.Username AS DonorName
+    FROM pledges p
+    INNER JOIN items i ON p.ItemID = i.ItemID
+    INNER JOIN users u ON p.UserID = u.UserID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `GetAllRequests` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -466,6 +677,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetAllResponses` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllResponses`(IN p_RequestID INT)
+BEGIN
+    SELECT 
+        res.ResponseID, 
+        res.QuantityProvided, 
+        res.Status AS ResponseStatus, 
+        usr.Username AS UserName, 
+        usr.Region AS ShippingFrom
+    FROM responses res
+    JOIN users usr ON res.UserID = usr.UserID
+    WHERE res.MatchedRequestID = p_RequestID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `GetAllUsers` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -478,7 +716,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllUsers`()
 BEGIN
-    SELECT UserID, Username, Email, Role FROM users;
+    SELECT UserID, Username, Email, Role, Country, Region, State, ZipCode, Address FROM users;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -517,6 +755,44 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetItem`(IN _itemID INT)
 BEGIN
   SELECT * FROM items WHERE ItemID = _itemID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetPledge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetPledge`(IN _pledgeID INT)
+BEGIN
+    SELECT * FROM pledges WHERE pledgeID = _pledgeID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetPledgeByID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetPledgeByID`(IN _PledgeID INT)
+BEGIN
+    SELECT * FROM pledges WHERE PledgeID = _PledgeID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -589,6 +865,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetResponseByID` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetResponseByID`(
+    IN p_ResponseID INT
+)
+BEGIN
+    SELECT * FROM responses WHERE ResponseID = p_ResponseID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `GetUserByID` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -601,7 +898,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetUserByID`(IN p_UserID INT)
 BEGIN
-    SELECT * FROM users WHERE UserID = p_UserID;
+    SELECT UserID, Username, Email, Role, Country, Region, State, ZipCode, Address FROM users WHERE UserID = p_UserID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -621,6 +918,37 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetUserByUsername`(IN p_Username VARCHAR(255))
 BEGIN
     SELECT * FROM users WHERE Username = p_Username;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `GetUserPledges` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetUserPledges`(
+    IN _UserID INT
+)
+BEGIN
+    SELECT 
+        p.PledgeID, 
+        p.QuantityPledged, 
+        p.Status AS PledgeStatus, 
+        i.Name AS ItemName, 
+        i.Description AS ItemDescription, 
+        i.Category AS ItemCategory,
+        i.ItemID AS ItemID
+    FROM pledges p
+    INNER JOIN items i ON p.ItemID = i.ItemID
+    WHERE p.UserID = _UserID;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -669,6 +997,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdatePledge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatePledge`(
+    IN _PledgeID INT, 
+    IN _UserID INT, 
+    IN _ItemID INT, 
+    IN _QuantityPledged INT, 
+    IN _Status ENUM('Pending','Fulfilled','Cancelled')
+)
+BEGIN
+    UPDATE pledges
+    SET UserID = _UserID, ItemID = _ItemID, QuantityPledged = _QuantityPledged, Status = _Status
+    WHERE PledgeID = _PledgeID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `UpdateRequest` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -697,6 +1052,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateResponse` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateResponse`(
+    IN p_ResponseID INT, 
+    IN p_UserID INT, 
+    IN p_MatchedRequestID INT, 
+    IN p_QuantityProvided INT, 
+    IN p_Status ENUM('Pending', 'Completed', 'Shipped')
+)
+BEGIN
+    UPDATE responses 
+    SET UserID = p_UserID, MatchedRequestID = p_MatchedRequestID, QuantityProvided = p_QuantityProvided, Status = p_Status
+    WHERE ResponseID = p_ResponseID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `UpdateUser` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -718,6 +1100,34 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateUserAddress` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateUserAddress`(
+    IN p_UserID INT, 
+    IN p_Country VARCHAR(255), 
+    IN p_Region VARCHAR(255), 
+    IN p_State VARCHAR(255), 
+    IN p_ZipCode VARCHAR(255), 
+    IN p_Address TEXT
+)
+BEGIN
+    UPDATE users 
+    SET Country = p_Country, Region = p_Region, State = p_State, ZipCode = p_ZipCode, Address = p_Address
+    WHERE UserID = p_UserID;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -728,4 +1138,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-23 11:08:11
+-- Dump completed on 2024-03-26 23:14:56

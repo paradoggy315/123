@@ -2,11 +2,13 @@ import { HomeTwoTone, EditTwoTone, CheckCircleTwoTone, ProfileTwoTone, CloseCirc
 import { Menu } from 'antd';
 import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../pages/auth/AuthContext'; // Ensure this path matches your file structure
 
 const Header = () => {
   const { user, logout } = useAuth(); // This hook provides the current user and logout function
   const [current, setCurrent] = useState('h');
+  const navigate = useNavigate();
 
   const isLoggedIn = user !== null; // Determine if logged in based on the presence of user data
 
@@ -16,6 +18,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    navigate('/')
     logout(); // Logout the user using the logout function from useAuth
     console.log("User logged out");
     // Optionally, redirect the user to the homepage or login page after logging out

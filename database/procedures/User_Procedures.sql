@@ -3,7 +3,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS GetAllUsers$$
 CREATE PROCEDURE GetAllUsers()
 BEGIN
-    SELECT UserID, Username, Email, Role FROM users;
+    SELECT UserID, Username, Email, Role, Country, Region, State, ZipCode, Address FROM users;
 END $$
 
 DROP PROCEDURE IF EXISTS AddUser$$
@@ -29,7 +29,7 @@ END $$
 DROP PROCEDURE IF EXISTS GetUserByID$$
 CREATE PROCEDURE GetUserByID(IN p_UserID INT)
 BEGIN
-    SELECT * FROM users WHERE UserID = p_UserID;
+    SELECT UserID, Username, Email, Role, Country, Region, State, ZipCode, Address FROM users WHERE UserID = p_UserID;
 END $$
 
 DROP PROCEDURE IF EXISTS GetUserByUsername$$
@@ -48,6 +48,21 @@ DROP PROCEDURE IF EXISTS CheckEmailExists$$
 CREATE PROCEDURE CheckEmailExists(IN p_Email VARCHAR(255))
 BEGIN
     SELECT 1 FROM users WHERE Email = p_Email LIMIT 1;
+END $$
+
+DROP PROCEDURE IF EXISTS UpdateUserAddress$$
+CREATE PROCEDURE UpdateUserAddress(
+    IN p_UserID INT, 
+    IN p_Country VARCHAR(255), 
+    IN p_Region VARCHAR(255), 
+    IN p_State VARCHAR(255), 
+    IN p_ZipCode VARCHAR(255), 
+    IN p_Address TEXT
+)
+BEGIN
+    UPDATE users 
+    SET Country = p_Country, Region = p_Region, State = p_State, ZipCode = p_ZipCode, Address = p_Address
+    WHERE UserID = p_UserID;
 END $$
 
 DELIMITER ;

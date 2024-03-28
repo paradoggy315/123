@@ -8,6 +8,7 @@ function Home() {
 
   const [disasterEvents, setDisasterEvents] = useState([]); // State for disaster events
   const [assistanceRequests, setAssistanceRequests] = useState([]); // State for assistance requests
+  const [pledges, setPledges] = useState([]);
 
   // Placeholder data - replace with actual data fetch in the future
   useEffect(() => {
@@ -18,11 +19,19 @@ function Home() {
       .catch(error => console.error('Error fetching disaster events:', error));
 
 
-    //Fetch assistance requests
+    // Fetch assistance requests that are not fulfilled
     fetch('http://127.0.0.1:5000/requests/events_info')
       .then(response => response.json())
-      .then(data => setAssistanceRequests(data))
+      .then(data => {
+        const openRequests = data.filter(request => request.QuantityNeeded !== 0);
+        setAssistanceRequests(openRequests);
+      })
       .catch(error => console.error('Error fetching assistance requests:', error));
+
+    fetch('http://127.0.0.1:5000/pledges') // Adjust this URL as needed
+      .then(response => response.json())
+      .then(data => setPledges(data))
+      .catch(error => console.error('Error fetching pledges:', error));  
   }, []);
 
   const goToDisasterEvent = (eventId) => {
@@ -111,6 +120,26 @@ function Home() {
         <div className="d-flex justify-content-end mb-4">
           <Button variant="secondary" onClick={viewAllRequests}>View All Requests</Button>
         </div>
+
+        <h2>Pledges</h2>
+        <Row xs={1} md={2} lg={4} className="g-4">
+          {pledges.map(pledge => (
+            <Col key={pledge.PledgeID}>
+              <Card className="mb-2">
+                <Card.Body>
+                  <Card.Title>{pledge.ItemName}</Card.Title>
+                  <Card.Text>
+                    Category: {pledge.ItemCategory} <br />
+                    Quantity Pledged: {pledge.QuantityPledged} <br />
+                    Status: {pledge.PledgeStatus}
+                  </Card.Text>
+                  {/* Add buttons or links here if needed */}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        
       </Container>
     </>
   );
