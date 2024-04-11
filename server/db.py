@@ -3,12 +3,16 @@ import os
 from .config import Config
 
 def get_db_connection():
-    if os.getenv('FLASK_ENV') == 'testing':
+    print(os.getenv('FLASK_ENV'))
+    print(os.getenv('TEST_FUNCTION'))
+    if os.getenv('TESTING') == 'TRUE':
         host = Config.TEST_DB_HOST
         user = Config.TEST_DB_USER
         password = Config.TEST_DB_PASSWORD
         db = Config.TEST_DB_NAME
+        print("In Testing database")
     else:
+        print("In Normal database")
         host = Config.DB_HOST
         user = Config.DB_USER
         password = Config.DB_PASSWORD

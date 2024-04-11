@@ -26,6 +26,7 @@ def handle_get_request_by_id(request_id):
 def handle_add_request():
     try:
         data = request.json
+        print(data)
         if 'item_id' not in data:
             print(data)
             print("Missing item_id")

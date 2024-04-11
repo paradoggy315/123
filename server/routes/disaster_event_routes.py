@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from ..services.disaster_event_service import *
 
 
@@ -13,3 +13,14 @@ def disaster_events():
 def disaster_event_by_id(disaster_event_id):
     disaster_event = get_disaster_event_by_id(disaster_event_id)
     return jsonify(disaster_event)
+
+@disaster_event_blueprint.route('/addDisasterEvent', methods=['POST'])
+def create_disaster_event():
+    try:
+        data = request.json
+        print(data)
+        add_disaster_event(data['eventName'],data['location'],data['startDate'],data['endDate'],data['description'])
+        return jsonify(message="Disaster added successfully"), 201
+    except Exception as e:
+        print(e)
+        return jsonify(error=str(e)), 500

@@ -32,7 +32,7 @@ def add_response():
             data['quantity_provided'],
             data['status']
         )
-        return jsonify(response_id=response_id), 201
+        return jsonify(response_id=response_id), 200
     except Exception as e:
         return jsonify(error=str(e)), 500
 
@@ -67,4 +67,6 @@ def get_responses_by_request_id(request_id):
         return jsonify(responses), 200
     except Exception as e:
         return jsonify(error=str(e)), 500
+    
+    
     

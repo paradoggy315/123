@@ -16,8 +16,21 @@ def handle_login():
         user = get_user_by_username(username)
         if not user:
             return jsonify({"error": "Username or password not found"}), 405
+        
+        print("User:", user)
+        print("Password:", password)
+        print("Stored Password:", user['PasswordHash'])
+        
+        
+        if not isinstance(user['PasswordHash'], bytes):
+            stored_password = user['PasswordHash'].encode('utf-8')
+        else:
+            stored_password = user['PasswordHash']
 
-        stored_password = user['PasswordHash'].encode('utf-8')
+        
+        
+    
+    
         if bcrypt.checkpw(password, stored_password):
             # Create a serializer with your secret key
             secret_key = os.getenv("TOKEN_SECRET")

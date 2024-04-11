@@ -27,7 +27,7 @@ def add_pledge():
     try:
         data = request.json
         result = add_new_pledge(data['UserID'], data['ItemID'], data['QuantityPledged'], data['Status'])
-        return jsonify({'message': 'Pledge added successfully', 'pledgeID': result}), 201
+        return jsonify({'message': 'Pledge added successfully', 'pledgeID': result}), 200
     except Exception as e:
         print(e)
         return jsonify({'error': f'Failed to add pledge: {str(e)}'}), 400
