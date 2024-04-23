@@ -51,9 +51,11 @@ BEGIN
     SELECT 
         r.RequestID, 
         r.ItemID,
+        r.EventID,
         r.QuantityNeeded,
         r.Status,
         r.CreateDate,
+        r.UserID,
         i.Name AS ItemName,
         i.Category,
         i.Description AS ItemDescription,

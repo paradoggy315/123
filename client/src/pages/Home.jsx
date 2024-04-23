@@ -28,10 +28,13 @@ function Home() {
       })
       .catch(error => console.error('Error fetching assistance requests:', error));
 
-    fetch('http://127.0.0.1:5000/pledges') // Adjust this URL as needed
-      .then(response => response.json())
-      .then(data => setPledges(data))
-      .catch(error => console.error('Error fetching pledges:', error));  
+      fetch('http://127.0.0.1:5000/pledges')
+      .then(res => res.json())
+      .then(data => {
+        const availablePledges = data.filter(pledge => pledge.PledgeStatus === "Pending"  && pledge.QuantityPledged > 0);
+        setPledges(availablePledges);
+      })
+      .catch(err => console.error("Failed to fetch pledges:", err)); 
   }, []);
 
   const goToDisasterEvent = (eventId) => {

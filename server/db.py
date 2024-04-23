@@ -12,7 +12,6 @@ def get_db_connection():
         db = Config.TEST_DB_NAME
         print("In Testing database")
     else:
-        print("In Normal database")
         host = Config.DB_HOST
         user = Config.DB_USER
         password = Config.DB_PASSWORD

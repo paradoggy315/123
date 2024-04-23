@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Form, Input, notification } from 'antd';
+import { useState, useEffect } from 'react';
+import { Table, Button, Modal, Form, Input, notification, DatePicker } from 'antd';
 import { useAuth } from '../auth/AuthContext'; // Adjust this path as necessary
 
 const ManageUserPledges = () => {
@@ -8,7 +8,9 @@ const ManageUserPledges = () => {
   const [currentPledge, setCurrentPledge] = useState({});
   const [form] = Form.useForm();
   const { user } = useAuth(); // Make sure user contains user_id
-
+  const [isShippingModalVisible, setIsShippingModalVisible] = useState(false);
+  const [currentShipping, setCurrentShipping] = useState({});
+  
   useEffect(() => {
     fetchUserPledges();
   }, [user.user_id]); // Added user.user_id as a dependency
@@ -67,6 +69,40 @@ const ManageUserPledges = () => {
       .catch(() => notification.error({ message: 'Error deleting pledge' }));
   };
 
+  const showShippingModal = (pledge) => {
+    setCurrentShipping(pledge);
+    setIsShippingModalVisible(true);
+  };
+  
+  const handleShip = () => {
+    form.validateFields().then(values => {
+      const shippingDetails = {
+        pledge_id: currentShipping.PledgeID,
+        response_id: null,
+        carrier: values.carrier,
+        tracking_number: values.trackingNumber,
+        shipping_date: values.shippingDate.format('YYYY-MM-DD') 
+      };
+  
+      fetch('http://127.0.0.1:5000/shipping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(shippingDetails)
+      })
+      .then(() => {
+        notification.success({ message: 'Shipping details added successfully' });
+        setIsShippingModalVisible(false);
+        fetchUserPledges(); // Refresh pledges
+      })
+      .catch(error => {
+        notification.error({ message: 'Failed to add shipping details' });
+        console.error('Error:', error);
+      });
+    }).catch(info => {
+      console.log('Validate Failed:', info);
+    });
+  };
+  
   const columns = [
     { title: 'Item Name', dataIndex: 'ItemName', key: 'ItemName' },
     { title: 'Quantity Pledged', dataIndex: 'QuantityPledged', key: 'QuantityPledged' },
@@ -78,6 +114,7 @@ const ManageUserPledges = () => {
         <>
           <Button onClick={() => editPledge(record)}>Edit</Button>
           <Button danger onClick={() => deletePledge(record.PledgeID)}>Delete</Button>
+          <Button onClick={() => showShippingModal(record)}>Ship</Button>
         </>
       ),
     },
@@ -91,6 +128,19 @@ const ManageUserPledges = () => {
         <Form form={form} layout="vertical">
           <Form.Item name="QuantityPledged" label="Quantity" rules={[{ required: true }]}>
             <Input type="number" />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal title="Add Shipping Details" visible={isShippingModalVisible} onOk={handleShip} onCancel={() => setIsShippingModalVisible(false)}>
+        <Form form={form} layout="vertical">
+          <Form.Item name="carrier" label="Carrier" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="trackingNumber" label="Tracking Number" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="shippingDate" label="Shipping Date" rules={[{ required: true }]}>
+            <DatePicker />
           </Form.Item>
         </Form>
       </Modal>

@@ -10,6 +10,7 @@ lerna-debug.log*
 env
 client/.vite
 client/node_modules
+client/coverage
 dist
 dist-ssr
 *.local
@@ -24,4 +25,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-client/coverage/lcov-report

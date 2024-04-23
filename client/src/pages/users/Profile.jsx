@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
-import { UserOutlined, EditOutlined, HomeOutlined, SolutionOutlined } from '@ant-design/icons';
+import { UserOutlined, EditOutlined, HomeOutlined, SolutionOutlined, LinkOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 
@@ -19,6 +19,10 @@ const Profile = () => {
 
   const handleCreatePledgesClick = () => {
     navigate('/create-pledges'); // Navigate to the create pledges page
+  };
+
+  const handleManualMatchingClick = () => {
+    navigate('/manual-matching'); // Navigate to the manual matching page
   };
 
   const handleAddDefaultAddress = async () => {
@@ -57,9 +61,14 @@ const Profile = () => {
       <p>Here you can manage your account settings and view your activity.</p>
 
       {user.role === 'Admin' && (
+        <>
         <Button type="primary" icon={<EditOutlined />} onClick={handleManageItemsClick}>
           Manage Donation Items
         </Button>
+        <Button type="primary" icon={<LinkOutlined />} onClick={handleManualMatchingClick} style={{ marginLeft: '10px' }}>
+          Manual Matching
+         </Button>
+        </>
       )}
 
       {/* Conditionally render the Manage My Pledges button if the user is a Donor */}

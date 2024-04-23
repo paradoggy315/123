@@ -17,6 +17,7 @@ import AddDisaster from './pages/disasters/AddDisaster';
 import AddResponse from './pages/responses/AddResponse';
 import CreatePledge from './pages/pledges/CreatePledges';
 import ManageUserPledges from './pages/pledges/UserPledges'; // Import your manage user pledges component 
+import ManualMatching from './pages/matches/ManualMatches'; // Import your manual matching component
 
 
 
@@ -73,6 +74,14 @@ const router = createBrowserRouter(
             <ManageUserPledges />
           </ProtectedRoute>
         }
+      />
+      <Route 
+        path="manual-matching" 
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <ManualMatching />
+          </ProtectedRoute>
+        } 
       />
 
     </Route>

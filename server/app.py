@@ -10,6 +10,7 @@ from .routes.items_routes import item_blueprint  # Import the Blueprint
 from .routes.pledge_routes import pledge_blueprint
 from .routes.user_routes import users_blueprint  # Import the Blueprint
 from .routes.response_routes import responses_blueprint  # Import the Blueprint
+from .routes.shipping_routes import shipping_blueprint
 from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
@@ -24,6 +25,7 @@ app.register_blueprint(item_blueprint)
 app.register_blueprint(pledge_blueprint)
 app.register_blueprint(users_blueprint)
 app.register_blueprint(responses_blueprint)
+app.register_blueprint(shipping_blueprint)
 
 if __name__ == "__main__":
     app.run(debug=True)

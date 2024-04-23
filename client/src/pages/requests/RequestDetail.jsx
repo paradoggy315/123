@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Alert, ListGroup, Button, Modal, Form } from 'react-bootstrap';
 import { useAuth } from '../auth/AuthContext';
@@ -13,6 +13,8 @@ const RequestDetail = () => {
     const [responseQuantity, setResponseQuantity] = useState('');
     const [userDetails, setUserDetails] = useState(null);
     const [responses, setResponses] = useState([]);
+    const [showShippingModal, setShowShippingModal] = useState(false);
+    const [currentResponse, setCurrentResponse] = useState({});
 
     useEffect(() => {
         // Fetch Request Details
@@ -102,7 +104,7 @@ const RequestDetail = () => {
           user_id: user.user_id,
           matched_request_id: requestDetail.RequestID,
           quantity_provided: responseQuantity,
-          status: 'Shipped', // or any default status you want to set
+          status: 'Pending',
       };
   
       try {
@@ -120,6 +122,7 @@ const RequestDetail = () => {
               alert('Response submitted successfully');
               // Close the modal after submitting
               setShowModal(false);
+              fetchResponses();
           } else {
               // If we hit an API error
               const errorData = await response.json();
@@ -134,6 +137,43 @@ const RequestDetail = () => {
     if (loading) return <Alert variant="info">Loading...</Alert>;
     if (error) return <Alert variant="danger">Error: {error}</Alert>;
     if (!requestDetail) return <Alert variant="warning">Request details not found.</Alert>;
+
+    const fetchResponses = async () => {
+        const response = await fetch(`http://127.0.0.1:5000/responses/request/${requestId}`);
+        const data = await response.json();
+        setResponses(data);
+    };
+
+    const handleShip = (response) => {
+        setCurrentResponse(response);
+        setShowShippingModal(true);
+    };
+
+    const submitShippingDetails = async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const shippingDetails = {
+            response_id: currentResponse.ResponseID,
+            carrier: form.carrier.value,
+            tracking_number: form.trackingNumber.value,
+            shipping_date: form.shippingDate.value
+        };
+
+        try {
+            const response = await fetch('http://127.0.0.1:5000/shipping', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(shippingDetails)
+            });
+
+            if (!response.ok) throw new Error('Failed to update shipping status.');
+            alert('Shipping details updated successfully');
+            setShowShippingModal(false);
+            fetchResponses();
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    };
 
     return (
         <Container>
@@ -205,6 +245,9 @@ const RequestDetail = () => {
                                         <strong>Quantity Provided:</strong> {response.QuantityProvided}<br />
                                         <strong>Status:</strong> {response.ResponseStatus}<br />
                                         <strong>Shipping From:</strong> {response.ShippingFrom}
+                                        {response.ResponseStatus === 'Pending' && (
+                                            <Button variant="primary" onClick={() => handleShip(response)}>Ship</Button>
+                                        )}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -214,6 +257,35 @@ const RequestDetail = () => {
             ) : (
                 <Alert variant="info">No responses yet.</Alert>
             )}
+            <Modal show={showShippingModal} onHide={() => setShowShippingModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Shipping Details</Modal.Title>
+                </Modal.Header>
+                <Form onSubmit={submitShippingDetails}>
+                    <Modal.Body>
+                        <Form.Group className="mb-3" controlId="carrier">
+                            <Form.Label>Carrier</Form.Label>
+                            <Form.Control type="text" placeholder="Carrier" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="trackingNumber">
+                            <Form.Label>Tracking Number</Form.Label>
+                            <Form.Control type="text" placeholder="Tracking Number" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="shippingDate">
+                            <Form.Label>Shipping Date</Form.Label>
+                            <Form.Control type="date" required />
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowShippingModal(false)}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
         </Container>
     );
 };
